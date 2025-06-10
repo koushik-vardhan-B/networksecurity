@@ -6,4 +6,6 @@ seaborn
 flask
 python_dotenv
 pymongo
+certifi
 
+# -e .
