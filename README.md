@@ -2,15 +2,15 @@
 
 ## Project Description
 
-This project implements an end-to-end machine learning pipeline for network security analysis. The goal is to automate the process of detecting network threats or anomalies using machine learning models. The pipeline is designed to handle all stages of the ML workflow, from data ingestion to model deployment, ensuring reproducibility, scalability, and ease of use.
+This project implements an end-to-end machine learning pipeline for **cyber security analysis**, specifically focusing on detecting phishing attacks using network data. The goal is to automate the process of identifying phishing threats or anomalies with machine learning models. The pipeline covers all stages of the ML workflow, from data ingestion to model deployment, ensuring reproducibility, scalability, and ease of use.
 
 ## Key Features
 
 - **Data Ingestion:**  
-  Automatically loads and splits raw network security data for further processing.
+  Automatically loads and splits raw phishing/network security data (e.g., from CSV or MongoDB).
 
 - **Data Validation:**  
-  Validates the schema, checks for required columns, and ensures data quality before training.
+  Validates schema, checks for required columns (including numerical features), and ensures data quality before training.
 
 - **Data Transformation:**  
   Handles missing values, feature engineering, and scaling using robust preprocessing techniques (e.g., KNNImputer).
@@ -27,7 +27,7 @@ This project implements an end-to-end machine learning pipeline for network secu
 ## Implementation Overview
 
 1. **Data Ingestion:**  
-   - Loads data from a source (e.g., MongoDB or CSV).
+   - Loads phishing dataset (network features and labels) from a source (e.g., MongoDB or CSV).
    - Splits data into training and testing sets.
    - Saves processed data for downstream tasks.
 
@@ -47,10 +47,19 @@ This project implements an end-to-end machine learning pipeline for network secu
 
 5. **Model Deployment:**  
    - Exposes a `/predict` endpoint via FastAPI for batch predictions.
-   - Accepts file uploads and returns predictions in a user-friendly format.
+   - Accepts phishing/network data files (CSV) and returns predictions in a user-friendly format.
 
 6. **Experiment Tracking:**  
    - Uses MLflow (with DagsHub backend) for tracking experiments, metrics, and artifacts.
+
+## How Inputs and Outputs Work
+
+- **Input:**  
+  Upload a CSV file containing network or phishing data (with the same features as used in training) via the `/predict` endpoint in the FastAPI web interface.
+
+- **Output:**  
+  The API returns a table (HTML or downloadable CSV) with an additional column indicating the model's prediction for each row (e.g., `phishing` or `legitimate`).  
+  The output can be viewed directly in the browser or downloaded for further analysis.
 
 ## How to Run
 
@@ -66,6 +75,6 @@ This project implements an end-to-end machine learning pipeline for network secu
 
 ---
 
-**This pipeline enables automated, reliable, and scalable network security analysis using machine learning.**
+**This pipeline enables automated, reliable, and scalable detection of phishing attacks and other network security threats using machine learning.**
 
 ---
