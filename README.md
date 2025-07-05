@@ -1,80 +1,190 @@
-# Network Security ML Pipeline
+# 📘 Network Security ML Pipeline Documentation
 
-## Project Description
+## 🧾 Project Overview
 
-This project implements an end-to-end machine learning pipeline for **cyber security analysis**, specifically focusing on detecting phishing attacks using network data. The goal is to automate the process of identifying phishing threats or anomalies with machine learning models. The pipeline covers all stages of the ML workflow, from data ingestion to model deployment, ensuring reproducibility, scalability, and ease of use.
-
-## Key Features
-
-- **Data Ingestion:**  
-  Automatically loads and splits raw phishing/network security data (e.g., from CSV or MongoDB).
-
-- **Data Validation:**  
-  Validates schema, checks for required columns (including numerical features), and ensures data quality before training.
-
-- **Data Transformation:**  
-  Handles missing values, feature engineering, and scaling using robust preprocessing techniques (e.g., KNNImputer).
-
-- **Model Training & Selection:**  
-  Trains multiple classification models (Random Forest, Decision Tree, Gradient Boosting, Logistic Regression, AdaBoost), performs hyperparameter tuning, and selects the best model based on evaluation metrics.
-
-- **Experiment Tracking:**  
-  Integrates with MLflow (via DagsHub) to log metrics, parameters, and artifacts for each experiment run.
-
-- **Model Deployment:**  
-  Provides a FastAPI-based web interface for making predictions on new data files, supporting easy integration and real-time inference.
-
-## Implementation Overview
-
-1. **Data Ingestion:**  
-   - Loads phishing dataset (network features and labels) from a source (e.g., MongoDB or CSV).
-   - Splits data into training and testing sets.
-   - Saves processed data for downstream tasks.
-
-2. **Data Validation:**  
-   - Checks for schema consistency and required columns.
-   - Validates the presence of numerical features.
-   - Logs validation results and data drift reports.
-
-3. **Data Transformation:**  
-   - Applies preprocessing (imputation, scaling, encoding).
-   - Saves transformation objects for reproducibility.
-
-4. **Model Training:**  
-   - Trains and tunes several ML models.
-   - Evaluates models using metrics like accuracy, precision, recall, and F1-score.
-   - Logs the best model and its metrics to MLflow.
-
-5. **Model Deployment:**  
-   - Exposes a `/predict` endpoint via FastAPI for batch predictions.
-   - Accepts phishing/network data files (CSV) and returns predictions in a user-friendly format.
-
-6. **Experiment Tracking:**  
-   - Uses MLflow (with DagsHub backend) for tracking experiments, metrics, and artifacts.
-
-## How Inputs and Outputs Work
-
-- **Input:**  
-  Upload a CSV file containing network or phishing data (with the same features as used in training) via the `/predict` endpoint in the FastAPI web interface.
-
-- **Output:**  
-  The API returns a table (HTML or downloadable CSV) with an additional column indicating the model's prediction for each row (e.g., `phishing` or `legitimate`).  
-  The output can be viewed directly in the browser or downloaded for further analysis.
-
-## How to Run
-
-1. **Clone the repository and install dependencies.**
-2. **Start the FastAPI server:**
-   ```bash
-   uvicorn app:app --reload
-   ```
-3. **Access the API documentation at:**  
-   [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-
-4. **Train the pipeline and make predictions using the provided endpoints.**
+This project implements a **machine learning pipeline** to detect **phishing attacks** and other **network security threats**. It is designed to be end-to-end, handling data ingestion, validation, transformation, model training, evaluation, experiment tracking, and deployment.
 
 ---
 
-**This pipeline enables automated, reliable, and scalable detection of phishing attacks and other network security threats using machine learning.**
+## 🚀 Key Features
+
+* **Data Ingestion**: Load and split raw data from CSV or MongoDB
+* **Data Validation**: Validate schema, types, and presence of critical columns
+* **Data Transformation**: Impute missing values, scale features
+* **Model Training**: Train and tune multiple classification models
+* **Experiment Tracking**: Use MLflow (via DagsHub) to track experiments
+* **Model Deployment**: FastAPI-based web app for prediction
 
 ---
+
+## 🧰 Tech Stack
+
+### 🖥 Backend (API & ML)
+
+| Component           | Technology                                    |
+| ------------------- | --------------------------------------------- |
+| Language            | Python 3.9+                                   |
+| Web Framework       | FastAPI                                       |
+| ML Libraries        | scikit-learn, pandas, numpy, imbalanced-learn |
+| Experiment Tracking | MLflow (via DagsHub)                          |
+| API Testing & Docs  | Swagger UI (FastAPI)                          |
+
+### 🌐 Frontend (Optional Enhancement)
+
+| Component    | Technology                         |
+| ------------ | ---------------------------------- |
+| UI Framework | React / Vue (optional)             |
+| Styling      | TailwindCSS / Bootstrap (optional) |
+| API Calls    | Axios / Fetch API (optional)       |
+
+### 🗄 Database
+
+| Component      | Technology       |
+| -------------- | ---------------- |
+| Raw Data Store | MongoDB / CSV    |
+| Logging Store  | MLflow + DagsHub |
+
+---
+
+## 🧩 Pipeline Steps (Detailed)
+
+### 1. 📥 Data Ingestion
+
+* Load raw data from CSV or MongoDB
+* Verify availability of required columns (e.g., IP, port, payload, etc.)
+* Split data into training and testing sets (default: 80/20)
+* Save the split data as `train.csv` and `test.csv`
+
+### 2. 🧪 Data Validation
+
+* Validate schema (expected vs actual columns)
+* Check for:
+
+  * Missing values
+  * Non-numeric entries in numeric columns
+  * Categorical encoding needs
+* Generate data drift reports using tools like EvidentlyAI (optional)
+
+### 3. 🔧 Data Transformation
+
+* Impute missing values using `KNNImputer`
+* Normalize features with `StandardScaler` or `RobustScaler`
+* Save transformation pipeline using `joblib`
+
+### 4. 🧠 Model Training
+
+* Models used:
+
+  * Random Forest
+  * Decision Tree
+  * Logistic Regression
+  * Gradient Boosting
+  * AdaBoost
+* Perform grid search / random search for hyperparameter tuning
+* Metrics used:
+
+  * Accuracy
+  * Precision
+  * Recall
+  * F1 Score
+* Save best model as `model.pkl`
+* Log parameters, metrics, and artifacts to MLflow
+
+### 5. 🧪 Experiment Tracking
+
+* Integrate MLflow with DagsHub
+* Track:
+
+  * Parameters
+  * Metrics
+  * Model versioning
+  * Preprocessing artifacts
+* Run via: `mlflow ui` or view on DagsHub
+
+### 6. 🚀 Model Deployment
+
+* FastAPI-based server with `/predict` endpoint
+* Accepts: CSV file upload with rows of network feature data
+* Returns: CSV with prediction column (`is_phishing: 0/1`)
+* Access via: `http://127.0.0.1:8000/docs`
+
+---
+
+## 🛠 How to Run the Project
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/your-repo/network-security-ml-pipeline.git
+cd network-security-ml-pipeline
+```
+
+### 2. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Train the Model
+
+```bash
+python train_pipeline.py
+```
+
+### 4. Start the API Server
+
+```bash
+uvicorn app:app --reload
+```
+
+### 5. Access API Docs
+
+Visit: `http://127.0.0.1:8000/docs`
+
+Upload a file to `/predict` endpoint and download predictions.
+
+---
+
+## 📦 Folder Structure
+
+```
+network-security-ml-pipeline/
+├── data/
+│   ├── raw.csv
+│   ├── train.csv
+│   └── test.csv
+├── models/
+│   ├── model.pkl
+│   └── transformer.pkl
+├── notebooks/
+│   └── EDA.ipynb
+├── app.py               # FastAPI app
+├── train_pipeline.py    # Main training script
+├── utils/
+│   ├── data_ingestion.py
+│   ├── data_validation.py
+│   ├── data_transformation.py
+│   └── model_trainer.py
+└── requirements.txt
+```
+
+---
+
+## 📈 Future Enhancements
+
+* Add SHAP/LIME explainability
+* Integrate with Kafka for streaming logs
+* Enable real-time alerting dashboard
+* Deploy to AWS/GCP for scaling
+
+---
+
+## 📞 Contact
+
+Maintainer: `Your Name`
+Email: `your.email@example.com`
+GitHub: `https://github.com/your-repo`
+
+---
+
+> "This project empowers cybersecurity through automation, data, and machine learning — because threats never sleep."
